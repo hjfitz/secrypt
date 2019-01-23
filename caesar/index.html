@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Caesar Cipher</title>
+	<style>
+		#output {
+			border: solid 1px grey;
+			height: 50vh;
+			width: 250px;
+			overflow:scroll;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Caesar Cipher</h1>
+	</header>
+	<textarea name="caeser-input" id="caesar-input" cols="30" rows="10"></textarea>
+	<button id="do-caesar">Run</button>
+	<label for="brute">Brute force?
+		<input type="checkbox" name="brute" id="brute">
+	</label>
+	<label for="shift">Letter shift:
+		<input type="text" value="1" id='shift'>
+	</label>
+	<div id="output"></div>
+
+	<script>
+			const input = document.getElementById('caesar-input')
+			const run = document.getElementById('do-caesar')
+			const brute = document.getElementById('brute')
+			const shift = document.getElementById('shift')
+			const output = document.getElementById('output')
+
+			const doShift = (trans, val) => [...trans].map((chr) => {
+				if (chr.length !== 1 || !chr.match(/[a-z]/i)) return chr
+				return String.fromCharCode((((chr.toLowerCase().charCodeAt() - 97) + val) % 26) + 97)
+			}).join('')
+
+			function placeInDOM(phrase) {
+				console.log('appending', phrase)
+				const para = document.createElement('p')
+				para.textContent = phrase
+				output.appendChild(para)
+			}
+	
+			run.addEventListener('click', () => {
+				output.innerHTML = ''
+				const toTranslate = input.value 
+				console.log('shifting', toTranslate)
+				const isBrute = brute.checked
+				if (isBrute) {
+					Array.from({ length: 25 }).map((_, idx) => placeInDOM(`Shift: ${idx+1} :: ${doShift(toTranslate, idx + 1)}`))
+				} else {
+					placeInDOM(doShift(toTranslate, parseInt(shift.value, 10)))
+				}
+			})
+		</script>
+	
+</body>
+</html>
