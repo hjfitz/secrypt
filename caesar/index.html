@@ -7,24 +7,46 @@
 	<style>
 		#output {
 			border: solid 1px grey;
-			height: 50vh;
 			width: 250px;
 			overflow:scroll;
+			flex: 1;
 		}
+
+		body, .input {
+			display:flex;
+		}
+
+		body {
+			font-family: monospace;
+		}
+
+		body > div {
+			margin: 8px;
+		}
+
+		.input {
+			flex-direction: column;
+		}
+
+		
 	</style>
 </head>
 <body>
+	<div class="input">
 	<header>
 		<h1>Caesar Cipher</h1>
 	</header>
-	<textarea name="caeser-input" id="caesar-input" cols="30" rows="10"></textarea>
-	<button id="do-caesar">Run</button>
-	<label for="brute">Brute force?
-		<input type="checkbox" name="brute" id="brute">
-	</label>
-	<label for="shift">Letter shift:
-		<input type="text" value="1" id='shift'>
-	</label>
+
+		<textarea name="caeser-input" id="caesar-input" cols="30" rows="10"></textarea>
+		<button id="do-caesar">Run</button>
+		<label for="brute">Brute force?
+			<input type="checkbox" name="brute" id="brute">
+		</label>
+		<label for="shift">Letter shift:
+			<input type="text" value="1" id='shift'>
+		</label>
+	</div>
+
 	<div id="output"></div>
 
 	<script>
