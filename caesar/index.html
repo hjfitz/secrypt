@@ -4,39 +4,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Caesar Cipher</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="theme-color" content="#263238">
 	<style>
+
+		.input {
+			max-width: 300px;
+		}
 		#output {
 			border: solid 1px grey;
-			width: 250px;
-			overflow:scroll;
+			overflow:hidden;
 			flex: 1;
 			width: 90%;
 			margin: 0 auto;
 		}
 
-		body, .input {
-			display:flex;
+		#output > p {
+			cursor: pointer;
+			padding: 8px 12px;
+			margin: 0;
 		}
 
-		body {
-			font-family: monospace;
+		#output > p:hover {
+			background: #455a64;
 		}
 
-		body > div {
-			margin: 8px;
-		}
-
-		.input {
-			flex-direction: column;
-		}
 
 		@media screen and (max-width: 800px) {
 			body {
 				flex-direction: column;
 			}
+			.input {
+				max-width: 90%;
+				margin: 0 auto;
+			}
 		}
-
-		
 	</style>
 </head>
 <body>
@@ -54,6 +56,13 @@
 		<label for="shift">Letter shift:
 			<input type="text" value="1" id='shift'>
 		</label>
+		<div>
+			<p>Note: when using brute force the following means:</p>
+			<ul>
+				<li><strong>Shifted by:</strong> the phrase was originally shifted by this number</li>
+				<li><strong>To shift:</strong> to get to thie phrase from the original, shift it by this much</li>
+			</ul>
+		</div>
 	</div>
 
 	<div id="output"></div>
@@ -65,15 +74,22 @@
 			const shift = document.getElementById('shift')
 			const output = document.getElementById('output')
 
-			const doShift = (trans, val) => [...trans].map((chr) => {
-				if (chr.length !== 1 || !chr.match(/[a-z]/i)) return chr
-				return String.fromCharCode((((chr.toLowerCase().charCodeAt() - 97) + val) % 26) + 97)
+			const doShift = (trans, amount) => [...trans].map((chr) => {
+				if (!chr.match(/[a-z]/i)) return chr
+					// Get its code
+				var code = chr.charCodeAt();
+
+				// Uppercase letters
+				if ((code >= 65) && (code <= 90)) return String.fromCharCode(((code - 65 + amount) % 26) + 65);
+				// Lowercase letters
+				else if ((code >= 97) && (code <= 122)) return String.fromCharCode(((code - 97 + amount) % 26) + 97);
 			}).join('')
 
-			function placeInDOM(phrase) {
+			function placeInDOM(idx, phrase) {
 				console.log('appending', phrase)
+				const inner = `Shifted by: ${26 - idx}, To shift: ${idx} ::: ${phrase}`
 				const para = document.createElement('p')
-				para.textContent = phrase
+				para.textContent = inner
 				output.appendChild(para)
 			}
 	
@@ -83,9 +99,9 @@
 				console.log('shifting', toTranslate)
 				const isBrute = brute.checked
 				if (isBrute) {
-					Array.from({ length: 25 }).map((_, idx) => placeInDOM(`Shift: ${idx+1} :: ${doShift(toTranslate, idx + 1)}`))
+					Array.from({ length: 27 }).map((_, idx) => 26 - (idx + 1)).map((idx) => placeInDOM(idx, doShift(toTranslate, idx)))
 				} else {
-					placeInDOM(doShift(toTranslate, parseInt(shift.value, 10)))
+					placeInDOM(26 - shift.value, doShift(toTranslate, parseInt(shift.value, 10)))
 				}
 			})
 		</script>

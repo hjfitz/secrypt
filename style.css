@@ -1,0 +1,43 @@
+body {
+	font-family: monospace;
+	background-color: #263238;
+	color: white;
+}
+
+a {
+	color: white;
+}
+
+
+body, .input {
+	display:flex;
+}
+
+
+body > div {
+	margin: 8px;
+}
+
+.input {
+	flex-direction: column;
+}
+
+textarea, #output, input {
+	background: #37474f;
+    color: white;
+    border: solid 1px grey;
+}
+
+input {
+	padding: 4px;
+}
+
+button {
+	background: #37474f;
+    border: solid 1px grey;
+    margin: 4px 0;
+    padding: 7px 0;
+    font-family: monospace;
+    color: white;
+    font-weight: 500;
+}
