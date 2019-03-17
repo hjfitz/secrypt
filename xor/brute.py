@@ -6,24 +6,22 @@ c = [
 	"1e0e1e6b0f126c0d14041d1e030f18071f61010215141f0e02610505660e0a0d6615040e6612040e0a076c180907181c071309"
 ]
 
-def strxor(a, b):     # xor two strings of different lengths
+# xor two strings of different lengths
+def strxor(a, b):    
     if len(a) > len(b):
         return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(a[:len(b)], b)])
     else:
         return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(a, b[:len(a)])])
 
 
-def repeat_to_length(string_to_expand, rep):
-	length = len(rep)
-	return (string_to_expand * ((length/len(string_to_expand))+1))[:length]
-
-
+# probably mega inefficient but strxor() removed any bonus chars
 def xorrep(cipher, attempt):
-	repeated = attempt.replace('\r\n', '') * 100 # probably mega inefficient
+	repeated = attempt.replace('\r\n', '') * 100 
 	return strxor(cipher, repeated)
 
 
-def isreadable(str): # check readability (allow only alphanumeric chars and some punctiation)
+# check readability (allow only alphanumeric chars and some punctiation)
+def isreadable(str): 
 	return bool(re.search('^[a-zA-Z0-9\., \'\"\-_\:\(\)]+$', str))
 
 def main():
@@ -34,11 +32,11 @@ def main():
 			print('Cipher number [{0}] - {1}'.format(idx, cipher))
 			for word in wordlist:
 				word = word.replace('\r\n', '')
+				# check upper and lowercase
 				attempt = xorrep(cipher.decode('hex'), word)
 				attemptupper = xorrep(cipher.decode('hex'), word.upper())
 				if isreadable(attempt):
-					print('Key: [{0}] decodes to: {1}'.format(word, attempt))
-					# print(word + ': ' +  attempt)
+					print('Key: [{0}] decodes to: {1}'.format(word, attempt)) # heard u like tabs
 				if isreadable(attemptupper):
 					print('Key [{0}] decodes to: {1}'.format(word.upper(), attemptupper))
 
